@@ -8,7 +8,7 @@ from Cenário3 import BaixoRuidoCanalRayleigh
 from Cenário4 import AltoRuidoCanalUnitario
 from Cenário5 import AltoRuidoCanalRayleigh
 
-#Classe de plotagem
+# Classe de plotagem
 from Plotagem import Plotagem
 
 # Variáveis globais
@@ -43,21 +43,41 @@ altoRuidoCanalUnitario = AltoRuidoCanalUnitario(media, variancia, ntestes)
 altoRuidoCanalRayleigh = AltoRuidoCanalRayleigh(media, variancia, ntestes)
 
 def coletar_porcentagens():
-    porcentagens = []
-    porcentagens.append(ruidoNuloCanalUnitario.cenario(x, nBits, plot))
-    porcentagens.append(baixoRuidoCanalUnitario.cenario(x, nBits, plot))
-    porcentagens.append(baixoRuidoCanalRayleigh.cenario(x, h1, h2, nBits, plot))
-    porcentagens.append(altoRuidoCanalUnitario.cenario(x, nBits, plot))
-    porcentagens.append(altoRuidoCanalRayleigh.cenario(x, h1, h2, nBits, plot))
-    return porcentagens
+    porcentagens_hamming = []
+    porcentagens_bch = []
+
+    # Cenário de Ruido Nulo Canal Unitário
+    hamming_ruido_nulo = ruidoNuloCanalUnitario.cenario(x, nBits, plot)
+    porcentagens_hamming.append(hamming_ruido_nulo[0])  # Porcentagem de Hamming
+    porcentagens_bch.append(hamming_ruido_nulo[1])  # Porcentagem de BCH
+
+    # Cenário de Baixo Ruído Canal Unitário
+    hamming_baixo_ruido = baixoRuidoCanalUnitario.cenario(x, nBits, plot)
+    porcentagens_hamming.append(hamming_baixo_ruido[0])
+    porcentagens_bch.append(hamming_baixo_ruido[1])
+
+    # Cenário de Baixo Ruído Canal Rayleigh
+    hamming_baixo_rayleigh = baixoRuidoCanalRayleigh.cenario(x, h1, h2, nBits, plot)
+    porcentagens_hamming.append(hamming_baixo_rayleigh[0])
+    porcentagens_bch.append(hamming_baixo_rayleigh[1])
+
+    # Cenário de Alto Ruído Canal Unitário
+    hamming_alto_ruido = altoRuidoCanalUnitario.cenario(x, nBits, plot)
+    porcentagens_hamming.append(hamming_alto_ruido[0])
+    porcentagens_bch.append(hamming_alto_ruido[1])
+
+    # Cenário de Alto Ruído Canal Rayleigh
+    hamming_alto_rayleigh = altoRuidoCanalRayleigh.cenario(x, h1, h2, nBits, plot)
+    porcentagens_hamming.append(hamming_alto_rayleigh[0])
+    porcentagens_bch.append(hamming_alto_rayleigh[1])
+
+    return porcentagens_hamming, porcentagens_bch
 
 # Executa os cenários e coleta as porcentagens de acertos
-porcentagens = coletar_porcentagens()
+porcentagens_hamming, porcentagens_bch = coletar_porcentagens()
 
 # Instancia a classe de plotagem
 plotagem = Plotagem()
 
 # Plota os resultados
-plotagem.plota_resultados(porcentagens)
-
-
+plotagem.plota_resultados(porcentagens_hamming, porcentagens_bch, nBits)

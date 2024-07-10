@@ -16,25 +16,28 @@ class AltoRuidoCanalRayleigh(CenárioBase, Plotagem, HammingCodeGenerator):
 
     def cenario(self, x, h1, h2, nBits, plot):
 
+        print("Cenário 5: Alto Ruido Canal Rayleigh\n")
+
         n5 = nBits
 
         if n5 == 7:
-            tabela = ['0000000', '1101001', '0101010', '1000011', '1001100', '0100101', '1100110', '0001111',
+            tabela_Hamming = ['0000000', '1101001', '0101010', '1000011', '1001100', '0100101', '1100110', '0001111',
                       '1110000', '0011001', '1011010', '0110011', '0111100', '1010101', '0010110', '1111111']
         elif n5 == 15:
-            tabela = self.generate_hamming_codes_15_bits()
+            tabela_Hamming = self.generate_hamming_codes_15_bits()
         elif n5 == 31:
-            tabela = self.generate_space_amostral_sample_31_bits(self.ntestes)
+            tabela_Hamming = self.generate_space_amostral_sample_31_bits(self.ntestes)
         elif n5 == 63:
-            tabela = self.generate_space_amostral_sample_63_bits(self.ntestes)
+            tabela_Hamming = self.generate_space_amostral_sample_63_bits(self.ntestes)
         elif n5 == 127:
-            tabela = self.generate_space_amostral_sample_127_bits(self.ntestes)
+            tabela_Hamming = self.generate_space_amostral_sample_127_bits(self.ntestes)
         elif n5 == 255:
-            tabela = self.generate_space_amostral_sample_255_bits(self.ntestes)
+            tabela_Hamming = self.generate_space_amostral_sample_255_bits(self.ntestes)
         else:
             raise ValueError("Número de bits não suportado")
 
-        contagem_de_acertos = 0
+        contagem_de_acertos_Hamming = 0
+        contagem_de_acertos_BCH = 0
 
         for i in range(self.ntestes):
             print(f'Teste {i+1}/{self.ntestes}')
@@ -51,21 +54,33 @@ class AltoRuidoCanalRayleigh(CenárioBase, Plotagem, HammingCodeGenerator):
             print('Erros do y2 =', erros_y2)
 
             toStringY1 = ''.join(map(str, y1))
-            P = self.encontraParidade(y1, tabela)
-            chave = self.comparaSinais(y2, P, tabela)
-            print("Chave gerada:", chave)
+            P = self.encontraParidade(y1, tabela_Hamming)
+            chave1 = self.comparaSinais(y2, P, tabela_Hamming)
+            print("Chave gerada por código de Hamming:", chave1)
 
-            if toStringY1 == chave:
-                contagem_de_acertos += 1
+            chave2 = self.test_bch_key_agreement(toStringY1, ''.join(map(str, y2)), tabela_Hamming)
+            print("Chave gerada por código BCH:", chave2)
+
+            if toStringY1 == chave1:
+                contagem_de_acertos_Hamming += 1
             else:
-                print("Não são iguais")
+                print("Não são iguais por Hamming")
+
+            if toStringY1 == chave2:
+                contagem_de_acertos_BCH += 1
+            else:
+                print("Não são iguais por BCH")
 
             print("\n--------------------------------------------------------")
 
             if plot:
                 self.plotar(x, y1, y2, len(x))
 
-        porcentagem_de_acertos = contagem_de_acertos * 100.0 / self.ntestes
-        print(f"Porcentagem de vezes que a chave gerada foi encontrada na tabela: {porcentagem_de_acertos:.2f}%")
 
-        return porcentagem_de_acertos
+        porcentagem_de_acertos_Hamming = contagem_de_acertos_Hamming * 100.00 / self.ntestes
+        print(f"Porcentagem de vezes que a chave gerada foi encontrada na tabela Hamming: {porcentagem_de_acertos_Hamming:.2f}%")
+
+        porcentagem_de_acertos_BCH = contagem_de_acertos_BCH * 100.00 / self.ntestes
+        print(f"Porcentagem de vezes que a chave gerada foi descoberta por BCH: {porcentagem_de_acertos_BCH:.2f}%\n")
+
+        return porcentagem_de_acertos_Hamming, porcentagem_de_acertos_BCH
