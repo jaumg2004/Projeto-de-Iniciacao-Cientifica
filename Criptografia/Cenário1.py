@@ -47,11 +47,12 @@ class RuidoNuloCanalUnitario(CenárioBase, HammingCodeGenerator):
             print('Erros do y2 =', erros_y2)
 
             toStringY1 = ''.join(map(str, y1))
+            toStringY2 = ''.join(map(str, y2))
             P = self.encontraParidade(y1, tabela_Hamming)
             chave1 = self.comparaSinais(y2, P, tabela_Hamming)
             print("Chave gerada por código de Hamming:", chave1)
 
-            chave2 = self.test_bch_key_agreement(toStringY1, ''.join(map(str, y2)), tabela_Hamming)
+            chave2 = self.test_bch_key_agreement(toStringY1, toStringY2, tabela_Hamming)
             print("Chave gerada por código BCH:", chave2)
 
             if toStringY1 == chave1:
