@@ -68,7 +68,7 @@ class Plotagem:
         plt.xticks([r + barWidth for r in range(len(cenarios))], cenarios)
         plt.legend()
 
-        diretorio = r"C:\Users\Jaum\Desktop\Plots\10.0 scale"
+        diretorio = r"escreva seu diretório"
         caminho_para_arquivo = os.path.join(diretorio, f'{nBits} bits.png')
 
         # Salva o plot no caminho especificado
