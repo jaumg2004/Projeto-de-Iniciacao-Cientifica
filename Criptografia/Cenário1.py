@@ -1,12 +1,11 @@
-import random
 
 from CenárioBase import CenárioBase
 from Plotagem import Plotagem
-from Hamming import HammingCodeGenerator
+from Hamming import Hamming
 from BCH import BCH
 from Golay import Golay  # Importa a classe Golay
 
-class RuidoNuloCanalUnitario(CenárioBase, HammingCodeGenerator, Plotagem):
+class RuidoNuloCanalUnitario(CenárioBase, Plotagem):
     def calculaY(self, x, testes):
         return [1 if x[i] > 0.5 else 0 for i in range(testes)]
 
@@ -16,8 +15,14 @@ class RuidoNuloCanalUnitario(CenárioBase, HammingCodeGenerator, Plotagem):
 
         n1 = nBits
 
+        hamming = Hamming()
         bch = BCH(n1)
-        tabelaBCH = bch.generate_code_table(size)
+        info_words, tabelaBCH = bch.generate_code_table(size)
+
+        # Imprimir a tabela de códigos
+        print("Tabela de Código BCH:")
+        for i in range(len(info_words)):
+            print(f"Informação: {''.join(map(str, info_words[i]))} -> Código: {''.join(map(str, tabelaBCH[i]))}")
 
         golay = Golay()
         tabelaGolay = golay.generate_code_table()
@@ -26,17 +31,19 @@ class RuidoNuloCanalUnitario(CenárioBase, HammingCodeGenerator, Plotagem):
             tabelaHamming = ['0000000', '1101001', '0101010', '1000011', '1001100', '0100101', '1100110', '0001111',
                              '1110000', '0011001', '1011010', '0110011', '0111100', '1010101', '0010110', '1111111']
         elif n1 == 15:
-            tabelaHamming = self.generate_hamming_codes_15_bits()
+            tabelaHamming = hamming.generate_hamming_codes_15_bits()
         elif n1 == 31:
-            tabelaHamming = self.generate_space_amostral_sample_31_bits(size)
+            tabelaHamming = hamming.generate_space_amostral_sample_31_bits(size)
         elif n1 == 63:
-            tabelaHamming = self.generate_space_amostral_sample_63_bits(size)
+            tabelaHamming = hamming.generate_space_amostral_sample_63_bits(size)
         elif n1 == 127:
-            tabelaHamming = self.generate_space_amostral_sample_127_bits(size)
+            tabelaHamming = hamming.generate_space_amostral_sample_127_bits(size)
         elif n1 == 255:
-            tabelaHamming = self.generate_space_amostral_sample_255_bits(size)
+            tabelaHamming = hamming.generate_space_amostral_sample_255_bits(size)
         else:
             raise ValueError("Número de bits não suportado")
+
+        print(tabelaHamming)
 
         contagem_de_acertos_Hamming = 0
         contagem_de_acertos_BCH = 0
@@ -59,13 +66,6 @@ class RuidoNuloCanalUnitario(CenárioBase, HammingCodeGenerator, Plotagem):
             toStringY1 = ''.join(map(str, y1))
             toStringY2 = ''.join(map(str, y2))
 
-            P = self.encontraParidade(toStringY1, tabelaHamming)
-            chave1 = self.comparaSinais(toStringY2, P, tabelaHamming)
-            print("Chave gerada por código de Hamming:", chave1)
-
-            chave2 = bch.test_bch_key_agreement(toStringY1, toStringY2, tabelaBCH)
-            print("Chave gerada por código BCH:", chave2)
-
             y1_golay = self.calculaY(x[1], 24)
             print('y1 de Golay =', y1_golay)
             y2_golay = self.calculaY(x[1], 24)
@@ -74,7 +74,14 @@ class RuidoNuloCanalUnitario(CenárioBase, HammingCodeGenerator, Plotagem):
             toStringY1_golay = ''.join(map(str, y1_golay))
             toStringY2_golay = ''.join(map(str, y2_golay))
 
-            chave3 = golay.test_golay_key_agreement(toStringY1_golay, toStringY2_golay, tabelaGolay)
+            chave1 = hamming.key_hamming_generation(toStringY1, toStringY2, tabelaHamming)
+            print("Chave gerada por código de Hamming:", chave1)
+
+            chave2 = bch.key_bch_generation(toStringY1, toStringY2, tabelaBCH)
+            print("Chave gerada por código BCH:", chave2)
+
+            P3 = self.encontraParidade(toStringY1_golay, tabelaGolay)
+            chave3 = self.comparaSinais(toStringY2_golay, P3, tabelaGolay)
             print("Chave gerada por código Golay:", chave3)
 
             if toStringY1 == chave1:

@@ -117,28 +117,3 @@ class Golay:
         code_table = [self.encode_golay(info_word) for info_word in info_words]
         return code_table
 
-    def test_golay_key_agreement(self, A_K, B_K, code_table):
-        """
-        Testa o acordo de chave usando o código de Golay.
-        """
-
-        # Converte as strings binárias em listas de inteiros
-        A_K = [int(bit) for bit in A_K]
-        B_K = [int(bit) for bit in B_K]
-
-        # Alice seleciona uma palavra-código aleatória (c)
-        c = random.choice(code_table)
-
-        # Alice calcula s = c XOR A_K
-        s = [(c[i] ^ A_K[i]) for i in range(24)]
-
-        # Bob recebe s e calcula c_B = s XOR B_K
-        c_B = [(s[i] ^ B_K[i]) for i in range(24)]
-
-        # Bob decodifica c_B para obter c
-        c_decoded = self.decode_golay(c_B)
-
-        # Bob calcula A_K_calculated = s XOR c_decoded
-        A_K_calculated = [(s[i] ^ c_decoded[i]) for i in range(24)]
-
-        return ''.join(map(str, A_K_calculated))
