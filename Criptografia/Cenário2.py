@@ -86,8 +86,7 @@ class BaixoRuidoCanalUnitario(CenárioBase, Plotagem):
             chave2 = bch.key_bch_generation(toStringY1, toStringY2, tabelaBCH)
             print("Chave gerada por código BCH:", chave2)
 
-            P3 = self.encontraParidade(toStringY1_golay, tabelaGolay)
-            chave3 = self.comparaSinais(toStringY2_golay, P3, tabelaGolay)
+            chave3 = golay.key_golay_generation(toStringY1_golay, toStringY2_golay, tabelaGolay)
             print("Chave gerada por código Golay:", chave3)
 
             if toStringY1 == chave1:

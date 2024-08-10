@@ -48,19 +48,17 @@ class Plotagem:
 
         plt.show()
 
-    def plota_resultados(self, porcentagens_hamming, porcentagens_bch, porcentagens_golay, nBits):
+    def plota_resultados_bchamming(self, porcentagens_hamming, porcentagens_bch, nBits):
         cenarios = ['Ruído Nulo Canal Unitário', 'Baixo Ruído Canal Unitário', 'Baixo Ruído Canal Rayleigh',
                     'Alto Ruído Canal Unitário', 'Alto Ruído Canal Rayleigh']
 
-        barWidth = 0.25
+        barWidth = 0.35
         r1 = range(len(cenarios))
         r2 = [x + barWidth for x in r1]
-        r3 = [x + barWidth for x in r2]
 
         plt.figure(figsize=(15, 7))
         plt.bar(r1, porcentagens_hamming, color='b', width=barWidth, edgecolor='grey', label='Hamming')
         plt.bar(r2, porcentagens_bch, color='y', width=barWidth, edgecolor='grey', label='BCH')
-        plt.bar(r3, porcentagens_golay, color='r', width=barWidth, edgecolor='grey', label='Golay')
 
         plt.xlabel('Cenários')
         plt.ylabel('Porcentagem de Acertos (%)')
@@ -68,8 +66,35 @@ class Plotagem:
         plt.xticks([r + barWidth for r in range(len(cenarios))], cenarios)
         plt.legend()
 
-        diretorio = r"C:\Users\Jaum\Desktop\Plots\1.0 scale"
-        caminho_para_arquivo = os.path.join(diretorio, f'{nBits} bits.png')
+        diretorio = r"C:\Users\Jaum\Desktop\Plots\2° RECONCILIAÇÃO\0.1 scale"
+        if not os.path.exists(diretorio):
+            os.makedirs(diretorio)  # Cria o diretório se ele não existir
+
+        caminho_para_arquivo = os.path.join(diretorio, f'{nBits} bits para BCH_Hamming.png')
+
+        # Salva o plot no caminho especificado
+        plt.savefig(caminho_para_arquivo)
+
+        # Mostra o plot
+        plt.show()
+
+    def plota_resultados_golay(self, porcentagens_golay, nBits):
+        cenarios = ['Ruído Nulo Canal Unitário', 'Baixo Ruído Canal Unitário', 'Baixo Ruído Canal Rayleigh',
+                    'Alto Ruído Canal Unitário', 'Alto Ruído Canal Rayleigh']
+
+        plt.figure(figsize=(15, 7))
+        plt.bar(cenarios, porcentagens_golay, color='r', edgecolor='grey', label='Golay')
+
+        plt.xlabel('Cenários')
+        plt.ylabel('Porcentagem de Acertos (%)')
+        plt.title('Porcentagem de Acertos em Diferentes Cenários')
+        plt.legend()
+
+        diretorio = r"C:\Users\Jaum\Desktop\Plots\2° RECONCILIAÇÃO\0.1 scale"
+        if not os.path.exists(diretorio):
+            os.makedirs(diretorio)  # Cria o diretório se ele não existir
+
+        caminho_para_arquivo = os.path.join(diretorio, f'{nBits} bits para Golay.png')
 
         # Salva o plot no caminho especificado
         plt.savefig(caminho_para_arquivo)

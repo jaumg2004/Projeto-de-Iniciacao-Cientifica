@@ -42,11 +42,11 @@ for i in range(nBits):
 x.append(x_bchamming)
 x.append(x_golay)
 
-h1_bchamming = np.random.rayleigh(1.0, nBits)
-h2_bchamming = np.random.rayleigh(1.0, nBits)
+h1_bchamming = np.random.rayleigh(0.1, nBits)
+h2_bchamming = np.random.rayleigh(0.1, nBits)
 
-h1_golay = np.random.rayleigh(1.0, 24)
-h2_golay = np.random.rayleigh(1.0, 24)
+h1_golay = np.random.rayleigh(0.1, 24)
+h2_golay = np.random.rayleigh(0.1, 24)
 
 h1.append(h1_bchamming)
 h1.append(h1_golay)
@@ -110,4 +110,5 @@ porcentagens_hamming, porcentagens_bch, porcentagens_golay = coletar_porcentagen
 plotagem = Plotagem()
 
 # Plota os resultados
-plotagem.plota_resultados(porcentagens_hamming, porcentagens_bch, porcentagens_golay, nBits)
+plotagem.plota_resultados_bchamming(porcentagens_hamming, porcentagens_bch, nBits)
+plotagem.plota_resultados_golay(porcentagens_golay, nBits)
