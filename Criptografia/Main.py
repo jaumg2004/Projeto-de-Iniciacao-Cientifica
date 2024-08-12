@@ -42,11 +42,11 @@ for i in range(nBits):
 x.append(x_bchamming)
 x.append(x_golay)
 
-h1_bchamming = np.random.rayleigh(0.1, nBits)
-h2_bchamming = np.random.rayleigh(0.1, nBits)
+h1_bchamming = np.random.rayleigh(1.0, nBits)
+h2_bchamming = np.random.rayleigh(1.0, nBits)
 
-h1_golay = np.random.rayleigh(0.1, 24)
-h2_golay = np.random.rayleigh(0.1, 24)
+h1_golay = np.random.rayleigh(1.0, 24)
+h2_golay = np.random.rayleigh(1.0, 24)
 
 h1.append(h1_bchamming)
 h1.append(h1_golay)

@@ -64,7 +64,7 @@ class Hamming:
         ]
         return self.gerar_espaco_amostral(247, posicoes_paridade, size)
 
-    """
+
     def key_hamming_generation(self, y1, y2, code_table):
 
         def xor_binary(fc, P):
@@ -103,7 +103,7 @@ class Hamming:
         A_k = xor_binary(s, c_B_closest)
 
         return A_k
-    """
+
 
     """
     def key_hamming_generation(self, y1, y2, code_table):

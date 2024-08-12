@@ -34,15 +34,15 @@ class Plotagem:
                 y.append(aux[i])
         return y
 
-    def plotar(self, x, y1, y2, tam, porcentagem_hamming, porcentagem_bch, porcentagem_golay):
+    def plotar(self, x, y1, y2, y1_golay, y2_golay, tam, porcentagem_hamming, porcentagem_bch, porcentagem_golay):
         x_bchamming = self.fixPlot(x[0])
-        y1_bchamming = self.fixPlot(y1[0])
-        y2_bchamming = self.fixPlot(y2[0])
+        y1_bchamming = self.fixPlot(y1)
+        y2_bchamming = self.fixPlot(y2)
         self.plota_diferencas(x_bchamming, y1_bchamming, y2_bchamming, tam * 100)
 
         x_golay = self.fixPlot(x[1])
-        y1_golay = self.fixPlot(y1[1])
-        y2_golay = self.fixPlot(y2[1])
+        y1_golay = self.fixPlot(y1_golay)
+        y2_golay = self.fixPlot(y2_golay)
         self.plota_diferencas(x_golay, y1_golay, y2_golay, len(x_golay) * 100)
 
         fig, ax = plt.subplots(figsize=(8, 5))

@@ -115,6 +115,6 @@ class BaixoRuidoCanalRayleigh(CenárioBase, Plotagem, Hamming):
         print(f"Porcentagem de vezes que a chave gerada foi encontrada na tabela Golay: {porcentagem_de_acertos_Golay:.2f}%\n")
 
         if plot:
-            self.plotar(x, y1, y2, len(x), porcentagem_de_acertos_Hamming, porcentagem_de_acertos_BCH, porcentagem_de_acertos_Golay)
+            self.plotar(x, y1, y2, y1_golay, y2_golay, len(x), porcentagem_de_acertos_Hamming, porcentagem_de_acertos_BCH, porcentagem_de_acertos_Golay)
 
         return porcentagem_de_acertos_Hamming, porcentagem_de_acertos_BCH, porcentagem_de_acertos_Golay

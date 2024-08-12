@@ -36,7 +36,7 @@ class Golay:
 
         return code_table
 
-    """
+
     def key_golay_generation(self, y1, y2, code_table):
 
         def xor_binary(fc, P):
@@ -75,7 +75,7 @@ class Golay:
         A_k = xor_binary(s, c_B_closest)
 
         return A_k
-    """
+
 
     """
     def key_golay_generation(self, y1, y2, code_table):
