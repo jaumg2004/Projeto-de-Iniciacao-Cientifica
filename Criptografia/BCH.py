@@ -120,7 +120,7 @@ class BCH:
 
         return info_words, code_table
 
-
+    """
     def key_bch_generation(self, y1, y2, code_table):
 
         def xor_binary(fc, P):
@@ -159,7 +159,7 @@ class BCH:
         A_k = xor_binary(s, c_B_closest)
 
         return A_k
-
+    """
 
     """
     def key_bch_generation(self, y1, y2, code_table):
