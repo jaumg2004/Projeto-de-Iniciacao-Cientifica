@@ -99,7 +99,7 @@ class Plotagem:
         if not os.path.exists(diretorio):
             os.makedirs(diretorio)  # Cria o diretório se ele não existir
 
-        caminho_para_arquivo = os.path.join(diretorio, f'{nBits} bits para Golay.png')
+        caminho_para_arquivo = os.path.join(diretorio, '24 bits para Golay.png')
 
         # Salva o plot no caminho especificado
         plt.savefig(caminho_para_arquivo)
