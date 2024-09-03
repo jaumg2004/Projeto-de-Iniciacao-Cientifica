@@ -16,7 +16,7 @@ class BCH:
             15: 11,
             31: 21,
             63: 45,
-            127: 92,
+            127: 120,
             255: 123
         }
         self.k_bits = k[self.n_bits]
@@ -27,11 +27,11 @@ class BCH:
         """
         correction_capacities = {
             7: 1,
-            15: 2,
+            15: 1,
             31: 5,
-            63: 10,
-            127: 21,
-            255: 31
+            63: 3,
+            127: 1,
+            255: 21
         }
         return correction_capacities[self.n_bits]
 
@@ -43,12 +43,15 @@ class BCH:
 
         # Criar o campo de Galois GF(2^m)
         GF = galois.GF(2**m)
+        print(GF)
 
         # Definir o elemento primitivo alfa no campo de Galois
         alpha = GF.primitive_element
+        print(alpha)
 
         # Calcular as raízes usando potências de alpha
         roots = [alpha**i for i in range(1, 2 * t + 1)]
+        print(roots)
 
         def min_polynomial(root):
             """
@@ -116,89 +119,7 @@ class BCH:
         # Codificar cada palavra de informação para obter a tabela de códigos
         code_table = [self.encode_bch(np.array(info_word, dtype=int)) for info_word in info_words]
 
-        return info_words, code_table
+        for i in range(len(info_words)):
+            print(f'Código: {''.join(map(str, code_table[i]))}')
 
-    """
-    def key_bch_generation(self, y1, y2, code_table):
-
-        def xor_binary(fc, P):
-            assert len(fc) == len(P), "Os valores devem ter o mesmo número de dígitos binários."
-            return ''.join('0' if a == b else '1' for a, b in zip(fc, P))
-
-        def hamming_distance(s1, s2):
-            length = min(len(s1), len(s2))
-            return sum(ch1 != ch2 for ch1, ch2 in zip(s1[:length], s2[:length]))
-
-        def comparacao_mais_proxima(y, tabela):
-            min_dist = float('inf')
-            pos = -1
-
-            for i, code in enumerate(tabela):
-                aux = hamming_distance(y, code)
-                if aux < min_dist:
-                    pos = i
-                    min_dist = aux
-
-            return tabela[pos]
-
-        # Escolhendo uma palavra-código aleatória da tabela
-        c = random.choice(code_table)
-
-        # Fazendo uma XOR entre a palavra-código escolhida e a chave A
-        s = xor_binary(y1, c)
-
-        # Bob calcula c_B a partir de s e y2
-        c_B = xor_binary(s, y2)
-
-        # Calcula a palavra-código mais próxima de c_B na tabela
-        c_B_closest = comparacao_mais_proxima(c_B, code_table)
-
-        # Recupera a chave A de Bob
-        A_k = xor_binary(s, c_B_closest)
-
-        return A_k
-    """
-
-    """
-    def key_bch_generation(self, y1, y2, code_table):
-
-        def subtract_binary(fc, y):
-            assert len(fc) == len(y), "Os valores devem ter o mesmo número de dígitos binários."
-            min_len = min(len(fc), len(y))
-            return ''.join('0' if a == b else '1' for a, b in zip(fc[:min_len], y[:min_len]))
-
-        def xor_binary(fc, P):
-            assert len(fc) == len(P), "Os valores devem ter o mesmo número de dígitos binários."
-            return ''.join('0' if a == b else '1' for a, b in zip(fc, P))
-
-
-        def hamming_distance(s1, s2):
-            length = min(len(s1), len(s2))
-            return sum(ch1 != ch2 for ch1, ch2 in zip(s1[:length], s2[:length]))
-
-        def comparacao_mais_proxima(y, tabela):
-            min_dist = 2*self.t + 1
-            pos = -1
-
-            for i, code in enumerate(tabela):
-                aux = hamming_distance(y, code)
-                if aux < min_dist:
-                    pos = i
-                    min_dist = aux
-
-            return tabela[pos]
-
-        def encontraParidade(y, tabela):
-            fc = comparacao_mais_proxima(y, tabela)
-            P = subtract_binary(fc, y)
-            return P
-
-        def comparaSinais(y, P, tabela):
-            fc = comparacao_mais_proxima(subtract_binary(y, P), tabela)
-            min_len = min(len(fc), len(P))
-            fc_padded = fc[:min_len]
-            P_padded = P[:min_len]
-            return xor_binary(fc_padded, P_padded)
-
-        return comparaSinais(y2, encontraParidade(y1, code_table), code_table)
-    """
+        return code_table

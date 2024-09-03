@@ -43,7 +43,7 @@ class Plotagem:
         x_golay = self.fixPlot(x[1])
         y1_golay = self.fixPlot(y1_golay)
         y2_golay = self.fixPlot(y2_golay)
-        self.plota_diferencas(x_golay, y1_golay, y2_golay, len(x_golay) * 100)
+        self.plota_diferencas(x_golay, y1_golay, y2_golay, len(x_golay))
 
         fig, ax = plt.subplots(figsize=(8, 5))
         ax.bar(['Hamming', 'BCH', 'Golay'], [porcentagem_hamming, porcentagem_bch, porcentagem_golay])
@@ -71,7 +71,7 @@ class Plotagem:
         plt.xticks([r + barWidth for r in range(len(cenarios))], cenarios)
         plt.legend()
 
-        diretorio = r"C:\Users\Jaum\Desktop\Plots\2° RECONCILIAÇÃO\0.1 scale"
+        diretorio = r"C:\Users\Jaum\Desktop\Plots\1° RECONCILIAÇÃO\0.1 scale"
         if not os.path.exists(diretorio):
             os.makedirs(diretorio)  # Cria o diretório se ele não existir
 
@@ -99,7 +99,7 @@ class Plotagem:
         if not os.path.exists(diretorio):
             os.makedirs(diretorio)  # Cria o diretório se ele não existir
 
-        caminho_para_arquivo = os.path.join(diretorio, '24 bits para Golay.png')
+        caminho_para_arquivo = os.path.join(diretorio, f'24 bits para Golay.png')
 
         # Salva o plot no caminho especificado
         plt.savefig(caminho_para_arquivo)

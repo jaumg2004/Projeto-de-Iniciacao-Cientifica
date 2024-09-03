@@ -24,13 +24,7 @@ class AltoRuidoCanalUnitario(CenárioBase, Plotagem):
 
         hamming = Hamming()
         bch = BCH(n4)
-        info_words, tabelaBCH = bch.generate_code_table(size)
-
-        # Imprimir a tabela de códigos
-        print("Tabela de Código BCH:")
-        for i in range(len(info_words)):
-            print(f"Informação: {''.join(map(str, info_words[i]))} -> Código: {''.join(map(str, tabelaBCH[i]))}")
-
+        tabelaBCH = bch.generate_code_table(size)
 
         golay = Golay()
         tabelaGolay = golay.generate_code_table()
@@ -85,13 +79,13 @@ class AltoRuidoCanalUnitario(CenárioBase, Plotagem):
             toStringY1_golay = ''.join(map(str, y1_golay))
             toStringY2_golay = ''.join(map(str, y2_golay))
 
-            chave1 = hamming.key_hamming_generation(toStringY1, toStringY2, tabelaHamming)
+            chave1 = self.comparaSinais(toStringY2, self.encontraParidade(toStringY1, tabelaHamming), tabelaHamming)
             print("Chave gerada por código de Hamming:", chave1)
 
-            chave2 = bch.key_bch_generation(toStringY1, toStringY2, tabelaBCH)
+            chave2 = self.comparaSinais(toStringY2, self.encontraParidade(toStringY1, tabelaBCH), tabelaBCH)
             print("Chave gerada por código BCH:", chave2)
 
-            chave3 = golay.key_golay_generation(toStringY1_golay, toStringY2_golay, tabelaGolay)
+            chave3 = self.comparaSinais(toStringY2_golay, self.encontraParidade(toStringY1_golay, tabelaGolay), tabelaGolay)
             print("Chave gerada por código Golay:", chave3)
 
             if toStringY1 == chave1:
@@ -119,6 +113,6 @@ class AltoRuidoCanalUnitario(CenárioBase, Plotagem):
         print(f"Porcentagem de vezes que a chave gerada foi encontrada na tabela Golay: {porcentagem_de_acertos_Golay:.2f}%\n")
 
         if plot:
-            self.plotar(x, y1, y2, y1_golay, y2_golay, len(x), porcentagem_de_acertos_Hamming, porcentagem_de_acertos_BCH, porcentagem_de_acertos_Golay)
+            self.plotar(x, y1, y2, y1_golay, y2_golay, len(x[0]), porcentagem_de_acertos_Hamming, porcentagem_de_acertos_BCH, porcentagem_de_acertos_Golay)
 
         return porcentagem_de_acertos_Hamming, porcentagem_de_acertos_BCH, porcentagem_de_acertos_Golay
