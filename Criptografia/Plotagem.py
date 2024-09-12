@@ -71,7 +71,7 @@ class Plotagem:
         plt.xticks([r + barWidth for r in range(len(cenarios))], cenarios)
         plt.legend()
 
-        diretorio = r"C:\Users\Jaum\Desktop\Plots\1° RECONCILIAÇÃO\0.1 scale"
+        diretorio = r"C:\Users\Jaum\Desktop\Plots\1° RECONCILIAÇÃO\1.0 scale"
         if not os.path.exists(diretorio):
             os.makedirs(diretorio)  # Cria o diretório se ele não existir
 
