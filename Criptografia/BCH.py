@@ -54,7 +54,7 @@ class BCH:
         bch_code = galois.BCH(self.n_bits, self.k_bits, d)
 
         # Codificar a palavra de informação
-        codeword = bch_code.encode(info_word)
+        codeword = reversed(bch_code.encode(info_word))
 
         # Retornar a palavra de código codificada
         return ''.join(map(str, codeword))
