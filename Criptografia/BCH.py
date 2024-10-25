@@ -10,10 +10,10 @@ class BCH:
         # Mapeamento do número de bits de informação
         k = {
             7: 4,
-            15: 7,
-            31: 21,
-            63: 57,
-            127: 120,
+            15: 11,
+            31: 26,
+            63: 7,
+            127: 64,
             255: 123
         }
         self.k_bits = k[self.n_bits]
@@ -26,11 +26,11 @@ class BCH:
         """
         correction_capacities = {
             7: 1,
-            15: 2,
-            31: 5,
-            63: 3,
-            127: 1,
-            255: 21
+            15: 1,
+            31: 1,
+            63: 10,
+            127: 10,
+            255: 19
         }
         return correction_capacities[self.n_bits]
 
@@ -39,9 +39,9 @@ class BCH:
         Retorna o polinômio gerador calculado para os parâmetros do código BCH.
         """
         # Usar a função BCH do pacote galois para gerar o código com parâmetros (n_bits, k_bits)
-        d = 2*self.t + 1 # Calculando a dintância miníma de Hamming
+        d = 2*self.t + 1# Calculando a dintância miníma de Hamming
         bch_code = galois.BCH(self.n_bits, self.k_bits, d)
-        print(f"Polinômio gerador: {bch_code.generator_poly}")
+
         return bch_code.generator_poly
 
     def encode_bch(self, info_word):
@@ -54,7 +54,7 @@ class BCH:
         bch_code = galois.BCH(self.n_bits, self.k_bits, d)
 
         # Codificar a palavra de informação
-        codeword = reversed(bch_code.encode(info_word))
+        codeword = bch_code.encode(info_word)
 
         # Retornar a palavra de código codificada
         return ''.join(map(str, codeword))

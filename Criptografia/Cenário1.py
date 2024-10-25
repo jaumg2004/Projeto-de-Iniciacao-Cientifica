@@ -3,6 +3,7 @@ from Plotagem import Plotagem
 from Hamming import Hamming
 from BCH import BCH
 from Golay import Golay
+from LDPC import LDPC
 
 class RuidoNuloCanalUnitario(CenárioBase, Plotagem):
     def calculaY(self, x, testes):
@@ -15,8 +16,12 @@ class RuidoNuloCanalUnitario(CenárioBase, Plotagem):
         n1 = nBits
 
         hamming = Hamming()
+
         bch = BCH(n1)
         tabelaBCH = bch.generate_code_table(size)
+
+        ldpc = LDPC(n1)
+        tabelaLDPC = ldpc.generate_code_table(size)
 
         golay = Golay()
         tabelaGolay = golay.generate_code_table()
@@ -41,6 +46,7 @@ class RuidoNuloCanalUnitario(CenárioBase, Plotagem):
 
         contagem_de_acertos_Hamming = 0
         contagem_de_acertos_BCH = 0
+        contagem_de_acertos_LDPC = 0
         contagem_de_acertos_Golay = 0
 
         for i in range(self.ntestes):
@@ -74,8 +80,11 @@ class RuidoNuloCanalUnitario(CenárioBase, Plotagem):
             chave2 = self.comparaSinais(toStringY2, self.encontraParidade(toStringY1, tabelaBCH), tabelaBCH)
             print("Chave gerada por código BCH:", chave2)
 
-            chave3 = self.comparaSinais(toStringY2_golay, self.encontraParidade(toStringY1_golay, tabelaGolay), tabelaGolay)
-            print("Chave gerada por código Golay:", chave3)
+            chave3 = self.comparaSinais(toStringY2, self.encontraParidade(toStringY1, tabelaLDPC), tabelaLDPC)
+            print("Chave gerada por código LDPC:", chave3)
+
+            chave4 = self.comparaSinais(toStringY2_golay, self.encontraParidade(toStringY1_golay, tabelaGolay), tabelaGolay)
+            print("Chave gerada por código Golay:", chave4)
 
             if toStringY1 == chave1:
                 contagem_de_acertos_Hamming += 1
@@ -87,7 +96,12 @@ class RuidoNuloCanalUnitario(CenárioBase, Plotagem):
             else:
                 print("Não são iguais por BCH")
 
-            if toStringY1_golay == chave3:
+            if toStringY1 == chave3:
+                contagem_de_acertos_LDPC += 1
+            else:
+                print("Não são iguais por LDPC")
+
+            if toStringY1_golay == chave4:
                 contagem_de_acertos_Golay += 1
             else:
                 print("Não são iguais por Golay")
@@ -101,10 +115,13 @@ class RuidoNuloCanalUnitario(CenárioBase, Plotagem):
         porcentagem_de_acertos_BCH = contagem_de_acertos_BCH * 100.00 / self.ntestes
         print(f"Porcentagem de vezes que a chave gerada foi descoberta por BCH: {porcentagem_de_acertos_BCH:.2f}%")
 
+        porcentagem_de_acertos_LDPC = contagem_de_acertos_LDPC * 100.00 / self.ntestes
+        print(f"Porcentagem de vezes que a chave gerada foi descoberta por LDPC: {porcentagem_de_acertos_LDPC:.2f}%")
+
         porcentagem_de_acertos_Golay = contagem_de_acertos_Golay * 100.00 / self.ntestes
         print(f"Porcentagem de vezes que a chave gerada foi encontrada na tabela Golay: {porcentagem_de_acertos_Golay:.2f}%\n")
 
         if plot:
-            self.plotar(x, y1, y2, y1_golay, y2_golay, len(x[0]), porcentagem_de_acertos_Hamming, porcentagem_de_acertos_BCH, porcentagem_de_acertos_Golay)
+            self.plotar(x, y1, y2, y1_golay, y2_golay, len(x[0]), porcentagem_de_acertos_Hamming, porcentagem_de_acertos_BCH, porcentagem_de_acertos_LDPC, porcentagem_de_acertos_Golay)
 
-        return porcentagem_de_acertos_Hamming, porcentagem_de_acertos_BCH, porcentagem_de_acertos_Golay
+        return porcentagem_de_acertos_Hamming, porcentagem_de_acertos_BCH, porcentagem_de_acertos_LDPC, porcentagem_de_acertos_Golay
