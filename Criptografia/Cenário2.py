@@ -2,10 +2,6 @@ import random
 
 from CenárioBase import CenárioBase
 from Plotagem import Plotagem
-from Hamming import Hamming
-from BCH import BCH
-from Golay import Golay
-from LDPC import LDPC
 
 class BaixoRuidoCanalUnitario(CenárioBase, Plotagem):
     def calculaY(self, x, variancia, media, ntestes):

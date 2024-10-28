@@ -1,11 +1,7 @@
 import random
 
 from CenárioBase import CenárioBase
-from Golay import Golay
 from Plotagem import Plotagem
-from Hamming import Hamming
-from BCH import BCH
-from LDPC import LDPC
 
 class AltoRuidoCanalRayleigh(CenárioBase, Plotagem):
     def calculaY(self, h, x, variancia, media, ntestes):
