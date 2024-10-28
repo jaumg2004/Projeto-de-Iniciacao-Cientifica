@@ -32,7 +32,7 @@ class Golay:
         code_table = [self.encode_golay(info_word) for info_word in info_words]
         print("Tabela de Código Golay:")
         for i in range(len(info_words)):
-            print(f'Código: {''.join(map(str, code_table[i]))}')
+            print(f'Código Golay: {''.join(map(str, code_table[i]))}')
 
         return code_table
 

@@ -182,6 +182,7 @@ class LDPC:
             H, G = self.coding_matrix_systematic_fixed(H, sparse=sparse)
         else:
             G = self.coding_matrix_fixed(H, sparse=sparse)
+
         return H, G
 
     def binaryproduct(self, X, Y):
@@ -203,16 +204,16 @@ class LDPC:
             31: 10,
             63: 6,
             127: 5,
-            255: 5
+            255: 15
         }  # Grau variável (número de 1s por linha na matriz H)
 
         d_c = {
             7: 7,
-            15: 15,
+            15: 5,
             31: 31,
             63: 21,
             127: 127,
-            255: 51
+            255: 85
         }  # Grau de verificação (número de 1s por coluna na matriz H)
 
         # Seleciona os valores de d_v e d_c correspondentes ao número de bits n_bits
@@ -239,6 +240,8 @@ class LDPC:
         if size is None:
             size = 2**self.k_bits  # Tamanho padrão para todos os bits suportados
 
+        print("K bits = ",self.k_bits)
+
         # Gerar todas as palavras de informação possíveis (vetores de bits)
         info_words = [list(map(int, format(i, f'0{self.k_bits}b'))) for i in range(size)]
 
@@ -246,7 +249,6 @@ class LDPC:
         code_table = [self.encode_ldpc(info_word) for info_word in info_words]
 
         for i in range(len(info_words)):
-            print(f'Código: {code_table[i]}')
+            print(f'Código LDPC: {code_table[i]}')
 
         return code_table
-

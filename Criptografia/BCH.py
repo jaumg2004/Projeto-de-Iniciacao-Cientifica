@@ -73,6 +73,6 @@ class BCH:
         code_table = [self.encode_bch(np.array(info_word, dtype=int)) for info_word in info_words]
 
         for i in range(len(info_words)):
-            print(f'Código: {''.join(map(str, code_table[i]))}')
+            print(f'Código BCH: {''.join(map(str, code_table[i]))}')
 
         return code_table
