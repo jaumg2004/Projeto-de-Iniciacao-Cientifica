@@ -50,7 +50,7 @@ class Plotagem:
         # Comparação de porcentagens de acertos
         fig, ax = plt.subplots(figsize=(8, 5))
         ax.bar(['Hamming', 'BCH', 'LDPC', 'Golay'], [porcentagem_hamming, porcentagem_bch, porcentagem_ldpc, porcentagem_golay],
-               color=['blue', 'yellow', 'orange', 'red'])  # Mudança de cor do LDPC para laranja
+               color=['blue', 'yellow', 'orange', 'red'])
         ax.set_xlabel('Método de Correção de Erros')
         ax.set_ylabel('Porcentagem de Acertos (%)')
         ax.set_title('Comparação de Porcentagem de Acertos entre Hamming, BCH, LDPC e Golay')
