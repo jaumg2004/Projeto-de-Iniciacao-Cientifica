@@ -40,8 +40,16 @@ class AltoRuidoCanalUnitario(CenárioBase, Plotagem):
             toStringY1 = ''.join(map(str, y1))
             toStringY2 = ''.join(map(str, y2))
 
-            chave = self.comparaSinais(toStringY2, self.encontraParidade(toStringY1, tabela), tabela)
-            print(f"Chave gerada por código de {code}:", chave)
+            if self.nplot == 1:
+                chave = self.comparaSinais(toStringY2, self.encontraParidade(toStringY1, tabela), tabela)
+                print(f"Chave gerada por código de {code}:", chave)
+
+            elif self.nplot == 2:
+                c = random.choice(tabela)
+                s = self.xor_binary(toStringY1, c)
+                c_B = self.xor_binary(toStringY2 , s)
+                chave = self.xor_binary(s, self.comparacao_mais_proxima(c_B, tabela))
+                print(f"Chave gerada por código de {code}:", chave)
 
             if toStringY1 == chave:
                 contagem_de_acertos += 1

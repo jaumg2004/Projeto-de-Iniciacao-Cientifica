@@ -15,7 +15,7 @@ class CodeGenerator:
         if self.code == 'BCH':
             k = {
                 7: 4,
-                15: 11,
+                15: 5,
                 127: 64,
                 255: 247
             }
@@ -100,7 +100,7 @@ class CodeGenerator:
 
     def encode_bch(self, info_word):
         """Codifica uma palavra de informação usando o código BCH."""
-        t = {7: 1, 15: 1, 127: 10, 255: 1}
+        t = {7: 1, 15: 3, 127: 10, 255: 1}
         d = 2 * t.get(self.n_bits, 0) + 1
         bch_code = galois.BCH(self.n_bits, self.k_bits, d)
         return ''.join(map(str, bch_code.encode(info_word)))
