@@ -16,23 +16,17 @@ class Plotagem:
         y1_fixed = self.fix_plot(y1)
         y2_fixed = self.fix_plot(y2)
 
-        fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(15, 7))
+        fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(15, 7), tight_layout=True)
 
-        axes[0].plot(indices, x_fixed, 'r--', label='X')
-        axes[0].plot(indices, y1_fixed, 'b', label='Y1')
-        axes[0].set_title('Y1')
-        axes[0].set_xlabel('Índice do Bit')
-        axes[0].set_ylabel('Valor do Bit')
-        axes[0].legend()
+        for ax, y_fixed, title in zip(axes, [y1_fixed, y2_fixed], ['Y1', 'Y2']):
+            ax.plot(indices, x_fixed, 'r--', label='X')
+            ax.plot(indices, y_fixed, 'b', label=title)
+            ax.set_title(title)
+            ax.set_xlabel('Índice do Bit')
+            ax.set_ylabel('Valor do Bit')
+            ax.legend()
+            ax.margins(0)
 
-        axes[1].plot(indices, x_fixed, 'r--', label='X')
-        axes[1].plot(indices, y2_fixed, 'b', label='Y2')
-        axes[1].set_title('Y2')
-        axes[1].set_xlabel('Índice do Bit')
-        axes[1].set_ylabel('Valor do Bit')
-        axes[1].legend()
-
-        plt.tight_layout()
         plt.show()
 
     def plota_resultados_ldpc_bchamming(self, code, porcentagens, nBits, n_plot):
@@ -46,51 +40,24 @@ class Plotagem:
 
         colors = {'Hamming': 'b', 'BCH': 'y', 'LDPC': 'orange'}
 
-        plt.figure(figsize=(17, 7))
+        fig, ax = plt.subplots(figsize=(17, 7), tight_layout=True)
+        bars = ax.bar(range(len(cenarios)), porcentagens, color=colors.get(code, 'grey'), edgecolor='grey', label=code)
 
-        bars = plt.bar(range(len(cenarios)), porcentagens, color=colors.get(code, 'grey'), edgecolor='grey', label=code)
-
-        plt.xlabel('Cenários')
-        plt.ylabel('Porcentagem de Acertos (%)')
-        plt.title(f'Porcentagem de Acertos em Diferentes Cenários para {code}')
-        plt.xticks(range(len(cenarios)), cenarios)
-        plt.legend()
+        ax.set_xlabel('Cenários')
+        ax.set_ylabel('Porcentagem de Acertos (%)')
+        ax.set_title(f'Porcentagem de Acertos em Diferentes Cenários para {code}', pad=20)  # Adiciona espaço abaixo do título
+        ax.set_xticks(range(len(cenarios)))
+        ax.set_xticklabels(cenarios, rotation=0, ha='center')  # Mantém as legendas horizontais
+        ax.legend()
+        ax.margins(0)
 
         for bar in bars:
             yval = bar.get_height()
-            plt.text(bar.get_x() + bar.get_width() / 2, yval + 1, f'{yval:.2f}%', ha='center', va='bottom')
+            ax.text(bar.get_x() + bar.get_width() / 2, yval, f'{yval:.2f}%', ha='center', va='bottom')
 
         diretorio = os.path.join(f"C:\\Users\\Jaum\\Desktop\\Plots\\{n_plot}° RECONCILIAÇÃO")
         os.makedirs(diretorio, exist_ok=True)
         caminho_para_arquivo = os.path.join(diretorio, f'{nBits} bits para {code}.png')
 
-        plt.savefig(caminho_para_arquivo)
-        plt.show()
-
-    def plota_resultados_golay(self, porcentagens_golay, n_plot):
-        cenarios = [
-            'Ruído Nulo Canal Unitário',
-            'Baixo Ruído Canal Unitário',
-            'Baixo Ruído Canal Rayleigh',
-            'Alto Ruído Canal Unitário',
-            'Alto Ruído Canal Rayleigh'
-        ]
-
-        plt.figure(figsize=(15, 7))
-        bars = plt.bar(cenarios, porcentagens_golay, color='r', edgecolor='grey', label='Golay')
-
-        plt.xlabel('Cenários')
-        plt.ylabel('Porcentagem de Acertos (%)')
-        plt.title('Porcentagem de Acertos em Diferentes Cenários para Golay')
-        plt.legend()
-
-        for bar in bars:
-            yval = bar.get_height()
-            plt.text(bar.get_x() + bar.get_width() / 2, yval + 1, f'{yval:.2f}%', ha='center', va='bottom')
-
-        diretorio = os.path.join(f"C:\\Users\\Jaum\\Desktop\\Plots\\{n_plot}° RECONCILIAÇÃO")
-        os.makedirs(diretorio, exist_ok=True)
-        caminho_para_arquivo = os.path.join(diretorio, '24 bits para Golay.png')
-
-        plt.savefig(caminho_para_arquivo)
+        plt.savefig(caminho_para_arquivo, bbox_inches='tight')
         plt.show()

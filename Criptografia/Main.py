@@ -56,7 +56,6 @@ def inicializa_canais(media, variancia, ntestes, n_plot):
         "alto_ruido_rayleigh": AltoRuidoCanalRayleigh(media, variancia, ntestes, n_plot),
     }
 
-
 def coletar_porcentagens(canais, x, h1, h2, plot, size, tabela, nBits, code):
     """Coleta as porcentagens de acertos para cada cenário."""
     return [
@@ -87,11 +86,7 @@ canais = inicializa_canais(media=0.5, variancia=1.5, ntestes=ntestes, n_plot=n_p
 porcentagens = coletar_porcentagens(canais, x, h1, h2, plot, size, tabela, nBits, code)
 
 # Plota os resultados
-plotagem = Plotagem()
-if code == "Golay":
-    plotagem.plota_resultados_golay(porcentagens, n_plot)
-else:
-    plotagem.plota_resultados_ldpc_bchamming(code, porcentagens, len(x), n_plot)
+Plotagem().plota_resultados_ldpc_bchamming(code, porcentagens, len(x), n_plot)
 
 # Marca o tempo final e exibe o tempo de execução
 execution_time = time.time() - start_time
