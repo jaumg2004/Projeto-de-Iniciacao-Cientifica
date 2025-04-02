@@ -29,7 +29,7 @@ class Plotagem:
 
         plt.show()
 
-    def plota_resultados_ldpc_bchamming(self, code, porcentagens, nBits, n_plot):
+    def plota(self, code, porcentagens, nBits, n_plot):
         cenarios = [
             'Ruído Nulo Canal Unitário',
             'Baixo Ruído Canal Unitário',
@@ -38,7 +38,7 @@ class Plotagem:
             'Alto Ruído Canal Rayleigh'
         ]
 
-        colors = {'Hamming': 'b', 'BCH': 'y', 'LDPC': 'orange'}
+        colors = {'Hamming': 'b', 'BCH': 'y', 'LDPC': 'orange', 'Golay': 'r'}
 
         fig, ax = plt.subplots(figsize=(17, 7), tight_layout=True)
         bars = ax.bar(range(len(cenarios)), porcentagens, color=colors.get(code, 'grey'), edgecolor='grey', label=code)
