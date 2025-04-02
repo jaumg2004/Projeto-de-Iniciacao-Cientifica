@@ -86,7 +86,7 @@ canais = inicializa_canais(media=0.5, variancia=1.5, ntestes=ntestes, n_plot=n_p
 porcentagens = coletar_porcentagens(canais, x, h1, h2, plot, size, tabela, nBits, code)
 
 # Plota os resultados
-Plotagem().plota_resultados_ldpc_bchamming(code, porcentagens, len(x), n_plot)
+Plotagem().plota(code, porcentagens, len(x), n_plot)
 
 # Marca o tempo final e exibe o tempo de execução
 execution_time = time.time() - start_time
